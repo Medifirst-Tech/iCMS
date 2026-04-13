@@ -1,5 +1,11 @@
 # Changelog — Medifirst CMS
 
+## [v1.3.1] — 2026-04-14
+### Fixed
+- Corrected Claude model names: claude-haiku-4-5 and claude-sonnet-4-5
+- 20 Haiku + 10 Sonnet calls updated
+
+---
 ## [v1.3.0] — 2026-04-13
 ### Added
 - Finance Module (#5) — Expense tracking, Receipt Intelligence, Ledger, Accountant View

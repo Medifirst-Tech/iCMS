@@ -1,4 +1,7 @@
 # Medifirst CMS
+README.md — update live URL to:
+https://medifirst-mims.netlify.app/
+
 **Clinic Management System**
 Version: 1.0 | Status: Phase 1 Complete | Last updated: April 2026
 

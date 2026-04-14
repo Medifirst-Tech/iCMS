@@ -1,5 +1,12 @@
 # Changelog — Medifirst CMS
+# [v1.3.3] — 2026-04-15
+### Fixed
+- USE_PROXY flipped to true — all AI calls through /api/claude
+- checkAiConnectivity uses proxy instead of direct Anthropic
+- Drug Reference search uses proxy
+- API_AUTH_FAILED error resolved
 
+---
 # [v1.3.2] — 2026-04-14
 ### Fixed
 - + New Patient button in CRM now opens registration modal correctly

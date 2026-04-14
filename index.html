@@ -3650,7 +3650,7 @@ body.staff-portal-active #hamburger-btn { display:none !important; }
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button onclick="crmExport()" style="padding:8px 16px;background:white;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;color:var(--text);">⬇ Export</button>
-            <button onclick="goTo('patients')" style="padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">+ New Patient</button>
+            <button onclick="openRegisterModal()" style="padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">+ New Patient</button>
           </div>
         </div>
 
@@ -7488,7 +7488,7 @@ function vdSendToQueue() {
 
 function addToQueueDirect(p, purpose, reason, isEmergency, doctor, feeTypeId) {
   const nextNo = Math.max(0, ...UNIFIED_QUEUE.map(q=>q.no)) + 1;
-  const name   = p ? p.name : 'Walk-in Patient';
+  const name   = p ? (p.name||'').toUpperCase() : 'WALK-IN PATIENT';
   const entry  = {
     no:         nextNo,
     name,
@@ -10290,7 +10290,7 @@ function renderSectionedQueue(container, counts) {
               <!-- ② Patient: name + age/chronic -->
               <div class="qrow-patient" style="padding:8px 10px;">
                 <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;line-height:1.3;">
-                  <span onclick="${nameClickFn}" style="${nameStyle}">${q.name}</span>
+                  <span onclick="${nameClickFn}" style="${nameStyle}">${(q.name||"").toUpperCase()}</span>
                   ${urgentPill}
                   ${apptPill}
                   ${holdRemark}
@@ -10436,7 +10436,7 @@ function renderQueueTab(container, status, counts) {
       html += `<div class="data-table-row queue-desktop-row" style="${cols};background:${rowBg};">
         <div style="font-weight:800;font-size:15px;color:var(--muted);">#${q.no}</div>
         <div>
-          <div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:5px;">${q.name} ${q.alert||''}</div>
+          <div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:5px;">${(q.name||"").toUpperCase()} ${q.alert||''}</div>
           <div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap;align-items:center;">
             <span style="font-size:11px;color:var(--muted);">${ageDisp}</span>${chronic}
             ${!q.mrn?'<span style="font-size:10px;color:var(--muted);font-style:italic;">No MRN</span>':''}
@@ -10459,7 +10459,7 @@ function renderQueueTab(container, status, counts) {
           ${status==='completed'?`<div class="qmr-wait" style="color:var(--success);">✅</div>`:''}
         </div>
         <div class="qmr-info">
-          <div class="qmr-name">${q.name} ${q.alert||''}</div>
+          <div class="qmr-name">${(q.name||"").toUpperCase()} ${q.alert||''}</div>
           <div class="qmr-sub">${ageDisp}${q.chronic.length?' · '+q.chronic.join(', '):''}${!q.mrn?' · <em style="opacity:.6;">No MRN</em>':''} · ${q.type}</div>
         </div>
         <div class="qmr-actions">${actionsMobile}</div>

@@ -1,5 +1,12 @@
 # Changelog — Medifirst CMS
 
+# [v1.3.2] — 2026-04-14
+### Fixed
+- + New Patient button in CRM now opens registration modal correctly
+- All patient names in queue forced to UPPERCASE at display and source
+- Queue display: waiting, in-progress, mobile view all uppercase
+
+---
 ## [v1.3.1] — 2026-04-14
 ### Fixed
 - Corrected Claude model names: claude-haiku-4-5 and claude-sonnet-4-5

@@ -25327,7 +25327,7 @@ function _dlDelete(key,i) {
    Production (Netlify): flip USE_PROXY = true → routes /api/claude
 ══════════════════════════════════════════════════════════════ */
 async function _claudeAPI({ model, max_tokens, messages, system }) {
-  const USE_PROXY = false; // ← flip true when Netlify function is live
+  const USE_PROXY = true; // Netlify proxy active
 
   if (USE_PROXY) {
     const resp = await fetch('/api/claude', {
@@ -25394,13 +25394,9 @@ function closeSettingsPanel() {
 async function checkAiConnectivity() {
   try {
     const r = await Promise.race([
-      fetch('https://api.anthropic.com/v1/messages', {
+      fetch('/api/claude', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-haiku-4-5',
           max_tokens: 10,
@@ -25410,8 +25406,8 @@ async function checkAiConnectivity() {
       new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000))
     ]);
     const j = await r.json();
-    // 200 = working, 401 = no key but reachable (artifact env handles it differently)
-    const working = r.status === 200 || r.status === 401;
+    // 200 = proxy working
+    const working = r.status === 200;
     window._aiReachable = working;
     // Update AI status badge if present
     const badge = document.getElementById('ai-status-badge');
@@ -41085,21 +41081,14 @@ Keep it under 200 words. If you cannot find reliable information, say so clearly
       tools: [{ type: 'web_search_20250305', name: 'web_search' }],
     };
 
-    const key = localStorage.getItem('cms_anthropic_key') || '';
-    const headers = {
-      'Content-Type': 'application/json',
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-      'anthropic-beta': 'web-search-2025-03-05',
-    };
-    if (key) headers['x-api-key'] = key;
-
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', headers, body: JSON.stringify(body),
+    const resp = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
     });
 
-    if (resp.status === 401) {
-      if (typeof _showDevKeyModal === 'function') _showDevKeyModal(drugReferenceSearch);
+    if (!resp.ok) {
+      showToast('AI proxy error — check Netlify function', 'warn', 4000);
       if (panel) panel.style.display = 'none';
       return;
     }
